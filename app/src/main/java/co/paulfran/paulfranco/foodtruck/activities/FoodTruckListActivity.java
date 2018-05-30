@@ -2,6 +2,8 @@ package co.paulfran.paulfranco.foodtruck.activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
 import com.android.volley.Request;
@@ -18,9 +20,13 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import co.paulfran.paulfranco.foodtruck.R;
+import co.paulfran.paulfranco.foodtruck.adapter.FoodTruckAdapter;
 import co.paulfran.paulfranco.foodtruck.model.FoodTruck;
+import co.paulfran.paulfranco.foodtruck.view.ItemDecorator;
 
 public class FoodTruckListActivity extends AppCompatActivity {
+
+    private FoodTruckAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +64,17 @@ public class FoodTruckListActivity extends AppCompatActivity {
                 } catch (JSONException e){
                     Log.v("JSON", "EXC" + e.getLocalizedMessage());
                 }
+
+                //System.out.println("This is the food truck name " + foodTruckList.get(1).getName());
+
+                RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_foodtruck);
+                LinearLayoutManager layoutManager = new LinearLayoutManager(getBaseContext());
+                recyclerView.setLayoutManager(layoutManager);
+                recyclerView.setHasFixedSize(true);
+                adapter = new FoodTruckAdapter(foodTruckList);
+                recyclerView.setAdapter(adapter);
+                layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+                recyclerView.addItemDecoration(new ItemDecorator(0,0,0,10));
 
             }
         }, new Response.ErrorListener() {
